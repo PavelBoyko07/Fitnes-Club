@@ -16,7 +16,7 @@
     <content url="file://$MODULE_DIR$/../Fitnes-Club">
       <excludeFolder url="file://$MODULE_DIR$/../Fitnes-Club/.venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.13 (DjangoProject1)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.13" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">
