@@ -94,8 +94,8 @@ class Migration(migrations.Migration):
                 ('end_date', models.DateField(verbose_name='Дата окончания')),
                 ('visit_total', models.IntegerField(default=0, verbose_name='Общее кол-во посещений')),
                 ('is_active', models.BooleanField(default=True, verbose_name='Активен')),
-                ('stock', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='catalog.stock', verbose_name='Акция')),
-                ('sub_type', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='catalog.subscriptiontype', verbose_name='Тип расписания')),
+                ('stock', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='abonements.stock', verbose_name='Акция')),
+                ('sub_type', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='abonements.subscriptiontype', verbose_name='Тип расписания')),
             ],
             options={
                 'verbose_name': 'Абонемент',
@@ -109,7 +109,7 @@ class Migration(migrations.Migration):
                 ('phone', models.CharField(max_length=20, verbose_name='Телефон')),
                 ('gender', models.CharField(blank=True, max_length=10, null=True, verbose_name='Пол')),
                 ('role', models.IntegerField(default=1, verbose_name='Роль пользователя')),
-                ('reviews', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='catalog.review', verbose_name='Отзыв')),
+                ('reviews', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='abonements.review', verbose_name='Отзыв')),
             ],
             options={
                 'verbose_name': 'Пользователь',
@@ -123,8 +123,8 @@ class Migration(migrations.Migration):
                 ('time', models.TimeField(verbose_name='Время')),
                 ('occupation_type', models.IntegerField(verbose_name='Тип занятия')),
                 ('favourites', models.BooleanField(default=False, verbose_name='Избранное')),
-                ('schedule_type', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='catalog.subscriptiontype', verbose_name='Тип расписания')),
-                ('trainer', models.ForeignKey(limit_choices_to={'role': 2}, on_delete=django.db.models.deletion.CASCADE, to='catalog.user', verbose_name='Тренер')),
+                ('schedule_type', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='abonements.subscriptiontype', verbose_name='Тип расписания')),
+                ('trainer', models.ForeignKey(limit_choices_to={'role': 2}, on_delete=django.db.models.deletion.CASCADE, to='abonements.user', verbose_name='Тренер')),
             ],
             options={
                 'verbose_name': 'Расписание',
@@ -137,7 +137,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('check_time', models.DateTimeField(verbose_name='Время входа')),
                 ('check_out_time', models.DateTimeField(blank=True, null=True, verbose_name='Время выхода')),
-                ('subscription', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='catalog.subscription', verbose_name='Абонемент')),
+                ('subscription', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='abonements.subscription', verbose_name='Абонемент')),
             ],
             options={
                 'verbose_name': 'Посещение',
