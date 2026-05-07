@@ -1,71 +1,162 @@
 {% extends 'base.html' %}
-
-{% block title %}Главная{% endblock %}
+{% load static %}
 
 {% block content %}
-<div class="container">
-    <div class="text-center mb-5">
-        <h1>Добро пожаловать в Fitness Club</h1>
-        <p>Лучший фитнес клуб для вашего здоровья</p>
-    </div>
+<!-- Hero Section -->
+<section class="hero-section" style="min-height: 100vh; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%); position: relative; overflow: hidden;">
+    <div class="container" style="padding-top: 150px;">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6" data-aos="fade-right">
+                <h1 class="display-1 fw-bold mb-3">Your Best <span style="color: #e63946;">Version</span></h1>
+                <p class="lead text-white-70 mb-4">Присоединяйся к сообществу здоровых и сильных людей. Современные тренажеры, профессиональные тренеры, гарантированный результат.</p>
+                <div class="d-flex gap-3">
+                    <a href="{% url 'abonement_list' %}" class="btn btn-premium btn-lg">Начать тренировки →</a>
+                    <a href="#reviews" class="btn btn-outline-premium btn-lg">Отзывы</a>
+                </div>
 
-    <h2 class="mb-4">Популярные абонементы</h2>
-
-    <div class="row">
-        {% for abonement in abonements %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                {% if abonement.image %}
-                <img src="{{ abonement.image.url }}" class="card-img-top" height="250" alt="{{ abonement.name }}">
-                {% endif %}
-
-                <div class="card-body">
-                    <h5>{{ abonement.name }}</h5>
-                    <p>{{ abonement.description|truncatewords:15 }}</p>
-                    <h4>{{ abonement.price }} сом</h4>
-
-                    <a href="{% url 'abonement_detail' abonement.pk %}" class="btn btn-dark">
-                        Подробнее
-                    </a>
+                <!-- Stats -->
+                <div class="row mt-5 pt-4">
+                    <div class="col-4">
+                        <h2 class="display-6 fw-bold text-white">25+</h2>
+                        <p class="text-muted">Клубов</p>
+                    </div>
+                    <div class="col-4">
+                        <h2 class="display-6 fw-bold text-white">15k+</h2>
+                        <p class="text-muted">Участников</p>
+                    </div>
+                    <div class="col-4">
+                        <h2 class="display-6 fw-bold text-white">75+</h2>
+                        <p class="text-muted">Тренеров</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
-    </div>
-
-    <hr>
-
-    <h2 class="mb-4">Наши тренеры</h2>
-
-    <div class="row">
-        {% for trainer in trainers %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                {% if trainer.image %}
-                <img src="{{ trainer.image.url }}" class="card-img-top" height="300" alt="{{ trainer.name }}">
-                {% endif %}
-
-                <div class="card-body">
-                    <h5>{{ trainer.name }}</h5>
-                    <p>{{ trainer.specialty }}</p>
-                    <p>{{ trainer.description }}</p>
-                </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600" alt="Hero" class="img-fluid rounded-4 shadow-lg" style="border-radius: 30px;">
             </div>
         </div>
-        {% endfor %}
     </div>
+</section>
 
-    <hr>
-
-    <h2>Отзывы клиентов</h2>
-
-    {% for review in reviews %}
-    <div class="card mb-3">
-        <div class="card-body">
-            <h5>{{ review.name }}</h5>
-            <p>{{ review.text }}</p>
+<!-- Abonements Section -->
+<section class="py-5" style="background: #0a0a0a;">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="badge bg-danger mb-2">Тарифы</span>
+            <h2 class="display-4 fw-bold">Выбери свой <span style="color: #e63946;">абонемент</span></h2>
+            <p class="lead text-white-70 mb-4">Лучшие условия для достижения твоих целей</p>
+        </div>
+        <div class="row">
+            {% for abonement in abonements %}
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <div class="card bg-dark border-0 rounded-4 h-100" style="transition: all 0.3s;">
+                    {% if abonement.is_popular %}
+                    <div class="position-absolute top-0 end-0 bg-danger text-white px-3 py-1 rounded-pill m-3">🔥 Популярный</div>
+                    {% endif %}
+                    <div class="card-body p-4">
+                        <h3 class="card-title text-white mb-3">{{ abonement.name }}</h3>
+                        <p class="text-muted">{{ abonement.description|truncatewords:15 }}</p>
+                        <div class="my-4">
+                            {% if abonement.old_price %}
+                            <span class="text-muted text-decoration-line-through">{{ abonement.old_price }} ₽</span>
+                            {% endif %}
+                            <h2 class="display-5 fw-bold text-white">{{ abonement.price }} ₽</h2>
+                            <small class="text-muted">на {{ abonement.period_days }} дней</small>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check-circle text-danger me-2"></i>{{ abonement.visits_count }} посещений</li>
+                            {% if abonement.has_gym %}<li class="mb-2"><i class="fas fa-check-circle text-danger me-2"></i>Тренажерный зал</li>{% endif %}
+                            {% if abonement.has_pool %}<li class="mb-2"><i class="fas fa-check-circle text-danger me-2"></i>Бассейн</li>{% endif %}
+                            {% if abonement.has_group %}<li class="mb-2"><i class="fas fa-check-circle text-danger me-2"></i>Групповые занятия</li>{% endif %}
+                        </ul>
+                        <a href="{{ abonement.get_absolute_url }}" class="btn btn-outline-premium w-100">Подробнее →</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'abonement_list' %}" class="btn btn-premium btn-lg">Все абонементы →</a>
         </div>
     </div>
-    {% endfor %}
-</div>
+</section>
+
+<!-- Trainers Section -->
+<section class="py-5" style="background: #050505;">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="badge bg-danger mb-2">Команда</span>
+            <h2 class="display-4 fw-bold">Топ<span style="color: #e63946;">-тренеры</span></h2>
+            <p class="lead text-white-70 mb-4">Профессионалы, которые приведут тебя к результату</p>
+        </div>
+        <div class="row">
+            {% for trainer in trainers %}
+            <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <div class="card bg-dark border-0 rounded-4 overflow-hidden h-100">
+                    {% if trainer.image %}
+                    <img src="{{ trainer.image.url }}" class="card-img-top" alt="{{ trainer.name }}" style="height: 300px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body text-center p-4">
+                        <h5 class="text-white mb-1">{{ trainer.name }}</h5>
+                        <p class="text-danger mb-2">{{ trainer.specialty }}</p>
+                        <p class="text-muted small">{{ trainer.description|truncatewords:15 }}</p>
+                        <div class="d-flex justify-content-center gap-2 mt-3">
+                            <span class="badge bg-secondary"><i class="fas fa-calendar me-1"></i>{{ trainer.experience_years }} лет</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Reviews Section -->
+<section id="reviews" class="py-5" style="background: #0a0a0a;">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="badge bg-danger mb-2">Отзывы</span>
+            <h2 class="display-4 fw-bold">Что говорят <span style="color: #e63946;">клиенты</span></h2>
+        </div>
+        <div class="row">
+            {% for review in reviews %}
+            <div class="col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <div class="card bg-dark border-0 rounded-4 p-4">
+                    <div class="d-flex mb-3">
+                        <div>
+                            <div class="text-warning mb-2">
+                                {% for i in "12345"|make_list %}
+                                    {% if forloop.counter <= review.rating %}
+                                        <i class="fas fa-star"></i>
+                                    {% else %}
+                                        <i class="far fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <h5 class="text-white mb-0">{{ review.name }}</h5>
+                        </div>
+                    </div>
+                    <p class="text-muted">"{{ review.text|truncatewords:40 }}"</p>
+                    <small class="text-secondary">{{ review.created_at|date:"d.m.Y" }}</small>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="lead text-white-70 mb-4">Пока нет отзывов. Будьте первым!</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'review_create' %}" class="btn btn-premium btn-lg">Оставить отзыв →</a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #e63946, #c1121f);">
+    <div class="container text-center" data-aos="zoom-in">
+        <h2 class="display-4 fw-bold mb-3">Готов изменить себя?</h2>
+        <p class="lead mb-4">Присоединяйся к FitClub сегодня и получи первую тренировку в подарок!</p>
+        <a href="{% url 'abonement_list' %}" class="btn btn-lg btn-dark px-5">Записаться сейчас →</a>
+    </div>
+</section>
 {% endblock %}

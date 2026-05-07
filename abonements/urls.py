@@ -1,13 +1,16 @@
 from django.urls import path
-from .views import *
+from django.conf import settings
+from django.conf.urls.static import static
+from . import views
 
 urlpatterns = [
-    path('', HomeView.as_view(), name='home'),
-    path('abonements/', AbonementListView.as_view(), name='abonement_list'),
-    path('abonements/create/', AbonementCreateView.as_view(), name='abonement_create'),
-    path('abonements/<int:pk>/', AbonementDetailView.as_view(), name='abonement_detail'),
-    path('abonements/<int:pk>/update/', AbonementUpdateView.as_view(), name='abonement_update'),
-    path('abonements/<int:pk>/delete/', AbonementDeleteView.as_view(), name='abonement_delete'),
-    path('trainers/', TrainerListView.as_view(), name='trainer_list'),
-    path('reviews/create/', ReviewCreateView.as_view(), name='review_create'),
+    path('', views.HomeView.as_view(), name='home'),
+    path('abonements/', views.AbonementListView.as_view(), name='abonement_list'),
+    path('abonements/<int:pk>/', views.AbonementDetailView.as_view(), name='abonement_detail'),
+    path('trainers/', views.TrainerListView.as_view(), name='trainer_list'),
+    path('reviews/create/', views.ReviewCreateView.as_view(), name='review_create'),
+    path('contact/', views.ContactView.as_view(), name='contact'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
