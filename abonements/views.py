@@ -2,8 +2,6 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (ListView,DetailView,CreateView, UpdateView,DeleteView,TemplateView,)
 from .models import SubscriptionType, Trainer, Review
-from .forms import AbonementForm, ReviewForm
-
 
 class HomeView(TemplateView):
     template_name = 'index.html'
@@ -31,6 +29,10 @@ class AbonementDetailView(DetailView):
     context_object_name = 'abonement'
 
 
+class AbonementForm:
+    pass
+
+
 class AbonementCreateView(CreateView):
     model = SubscriptionType
     form_class = AbonementForm
@@ -55,6 +57,10 @@ class TrainerListView(ListView):
     model = Trainer
     template_name = 'trainers/trainer_list.html'
     context_object_name = 'trainers'
+
+
+class ReviewForm:
+    pass
 
 
 class ReviewCreateView(CreateView):
