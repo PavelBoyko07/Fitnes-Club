@@ -1,14 +1,19 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import (ListView,DetailView,CreateView,UpdateView,DeleteVie)
-from django import forms
-from .models import SubscriptionType
+from django.views.generic import (ListView,DetailView,CreateView, UpdateView,DeleteView,TemplateView,)
+from .models import SubscriptionType, Trainer, Review
+from .forms import AbonementForm, ReviewForm
 
 
-class AbonementForm(forms.ModelForm):
-    class Meta:
-        model = SubscriptionType
-        fields = ['name', 'description', 'period', 'price', 'is_active']
+class HomeView(TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['abonements'] = SubscriptionType.objects.filter(is_active=True)[:3]
+        context['trainers'] = Trainer.objects.all()
+        context['reviews'] = Review.objects.all().order_by('-created_at')[:5]
+        return context
 
 
 class AbonementListView(ListView):
@@ -44,3 +49,16 @@ class AbonementDeleteView(DeleteView):
     model = SubscriptionType
     template_name = 'abonements/abonement_confirm_delete.html'
     success_url = reverse_lazy('abonement_list')
+
+
+class TrainerListView(ListView):
+    model = Trainer
+    template_name = 'trainers/trainer_list.html'
+    context_object_name = 'trainers'
+
+
+class ReviewCreateView(CreateView):
+    model = Review
+    form_class = ReviewForm
+    template_name = 'reviews/review_form.html'
+    success_url = reverse_lazy('home')

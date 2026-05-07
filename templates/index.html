@@ -5,6 +5,70 @@
     <title>Title</title>
 </head>
 <body>
+{% extends 'base.html' %}
+<div class="text-center mb-5">
+    <h1>Добро пожаловать в Fitness Club</h1>
+    <p>Лучший фитнес клуб для вашего здоровья</p>
+</div>
 
+<h2 class="mb-4">Популярные абонементы</h2>
+
+<div class="row">
+    {% for abonement in abonements %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+
+            {% if abonement.image %}
+            <img src="{{ abonement.image.url }}" class="card-img-top" height="250">
+            {% endif %}
+
+            <div class="card-body">
+                <h5>{{ abonement.name }}</h5>
+                <p>{{ abonement.description|truncatewords:15 }}</p>
+                <h4>{{ abonement.price }} сом</h4>
+
+                <a href="{% url 'abonement_detail' abonement.pk %}" class="btn btn-dark">
+                    Подробнее
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<hr>
+
+<h2 class="mb-4">Наши тренеры</h2>
+
+<div class="row">
+    {% for trainer in trainers %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="{{ trainer.image.url }}" class="card-img-top" height="300">
+
+            <div class="card-body">
+                <h5>{{ trainer.name }}</h5>
+                <p>{{ trainer.specialty }}</p>
+                <p>{{ trainer.description }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<hr>
+
+<h2>Отзывы клиентов</h2>
+
+{% for review in reviews %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5>{{ review.name }}</h5>
+        <p>{{ review.text }}</p>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
 </body>
 </html>

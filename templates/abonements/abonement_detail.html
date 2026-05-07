@@ -1,21 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
 {% extends 'base.html' %}
 
 {% block content %}
 
-<h1>{{ abonement.name }}</h1>
+<div class="row">
 
-<p>{{ abonement.description }}</p>
+    <div class="col-md-6">
+        {% if abonement.image %}
+        <img src="{{ abonement.image.url }}" class="img-fluid rounded">
+        {% endif %}
+    </div>
 
-<p>{{ abonement.price }}</p>
+    <div class="col-md-6">
+        <h1>{{ abonement.name }}</h1>
 
-<p>{{ abonement.period }}</p>
+        <p>{{ abonement.description }}</p>
 
-<a href="{% url 'abonement_update' abonement.pk %}">
-    Изменить
-</a>
+        <h3>{{ abonement.price }} сом</h3>
 
-<a href="{% url 'abonement_delete' abonement.pk %}">
-    Удалить
-</a>
+        <p>Срок: {{ abonement.period_days }} дней</p>
+
+        <a href="{% url 'abonement_update' abonement.pk %}" class="btn btn-warning">
+            Изменить
+        </a>
+
+        <a href="{% url 'abonement_delete' abonement.pk %}" class="btn btn-danger">
+            Удалить
+        </a>
+    </div>
+
+</div>
 
 {% endblock %}
+</body>
+</html>

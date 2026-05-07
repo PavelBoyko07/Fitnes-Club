@@ -1,22 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
 {% extends 'base.html' %}
 
 {% block content %}
 
-<h1>Абонементы</h1>
+<h1 class="mb-4">Абонементы</h1>
 
-<a href="{% url 'abonement_create' %}">Создать</a>
+<div class="row">
 
 {% for abonement in abonements %}
-    <hr>
+<div class="col-md-4 mb-4">
+    <div class="card h-100">
 
-    <h2>{{ abonement.name }}</h2>
+        {% if abonement.image %}
+        <img src="{{ abonement.image.url }}" class="card-img-top" height="250">
+        {% endif %}
 
-    <p>{{ abonement.price }}</p>
+        <div class="card-body">
+            <h4>{{ abonement.name }}</h4>
+            <p>{{ abonement.description|truncatewords:20 }}</p>
+            <h5>{{ abonement.price }} сом</h5>
 
-    <a href="{% url 'abonement_detail' abonement.pk %}">
-        Подробнее
-    </a>
-
+            <a href="{% url 'abonement_detail' abonement.pk %}" class="btn btn-dark">
+                Подробнее
+            </a>
+        </div>
+    </div>
+</div>
 {% endfor %}
 
+</div>
+
 {% endblock %}
+</body>
+</html>

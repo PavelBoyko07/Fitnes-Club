@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="mb-4">Тренеры</h1>
+
+<div class="row">
+
+{% for trainer in trainers %}
+<div class="col-md-4 mb-4">
+    <div class="card h-100">
+
+        <img src="{{ trainer.image.url }}" class="card-img-top" height="300">
+
+        <div class="card-body">
+            <h4>{{ trainer.name }}</h4>
+            <p>{{ trainer.specialty }}</p>
+            <p>{{ trainer.description }}</p>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+</div>
+
+{% endblock
+</body>
+</html>
