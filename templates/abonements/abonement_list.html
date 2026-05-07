@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Абонементы</h1>
+
+<a href="{% url 'abonement_create' %}">Создать</a>
+
+{% for abonement in abonements %}
+    <hr>
+
+    <h2>{{ abonement.name }}</h2>
+
+    <p>{{ abonement.price }}</p>
+
+    <a href="{% url 'abonement_detail' abonement.pk %}">
+        Подробнее
+    </a>
+
+{% endfor %}
+
+{% endblock %}

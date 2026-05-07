@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{ abonement.name }}</h1>
+
+<p>{{ abonement.description }}</p>
+
+<p>{{ abonement.price }}</p>
+
+<p>{{ abonement.period }}</p>
+
+<a href="{% url 'abonement_update' abonement.pk %}">
+    Изменить
+</a>
+
+<a href="{% url 'abonement_delete' abonement.pk %}">
+    Удалить
+</a>
+
+{% endblock %}
