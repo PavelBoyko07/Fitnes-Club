@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Главная{% endblock %}
+
+{% block hero %}
+<div class="hero">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold">Твое идеальное тело</h1>
+        <p class="lead mb-4">Современный фитнес-клуб с лучшими тренерами и оборудованием</p>
+        <a href="{% url 'abonements:abonement_list' %}" class="btn btn-custom btn-lg">Начать тренировки →</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row text-center mb-5">
+    <div class="col-md-4 mb-3"><i class="fas fa-dumbbell fa-3x text-danger mb-3"></i><h4>Современное оборудование</h4><p>Новейшие тренажеры</p></div>
+    <div class="col-md-4 mb-3"><i class="fas fa-chalkboard-user fa-3x text-danger mb-3"></i><h4>Опытные тренеры</h4><p>Профессионалы своего дела</p></div>
+    <div class="col-md-4 mb-3"><i class="fas fa-clock fa-3x text-danger mb-3"></i><h4>Удобное время</h4><p>Тренируйтесь когда удобно</p></div>
+</div>
+
+<h2 class="text-center mb-4">🔥 Популярные абонементы</h2>
+<div class="row">
+    {% for abonement in popular_abonements %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center p-4">
+                <h4>{{ abonement.name }}</h4>
+                <p>{{ abonement.description|truncatewords:10 }}</p>
+                <div class="price">{{ abonement.price }} ₽</div>
+                <a href="{% url 'abonements:abonement_detail' abonement.id %}" class="btn btn-custom mt-3">Подробнее</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<h2 class="text-center mb-4">⭐ Отзывы клиентов</h2>
+<div class="row">
+    {% for review in reviews %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="mb-2">{% for i in "12345"|make_list %}{% if forloop.counter <= review.rating %}⭐{% else %}☆{% endif %}{% endfor %}</div>
+                <p>{{ review.text|truncatewords:20 }}</p>
+                <footer class="blockquote-footer">{{ review.user.username }}</footer>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

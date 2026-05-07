@@ -3,17 +3,20 @@ from django.forms import forms
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=200,verbose_name='Название категории',help_text='Максимум 200 символов')
+    name = models.CharField(max_length=200, verbose_name='Название категории', help_text='Максимум 200 символов')
 
-    slug = models.SlugField(max_length=200,unique=True,verbose_name='URL-адрес',help_text='URL-friendly название (латинские буквы, цифры, дефисы)')
+    slug = models.SlugField(max_length=200, unique=True, verbose_name='URL-адрес',
+                            help_text='URL-friendly название (латинские буквы, цифры, дефисы)')
 
-    description = models.TextField(blank=True,null=True,verbose_name='Описание',help_text='Необязательное описание категории')
+    description = models.TextField(blank=True, null=True, verbose_name='Описание',
+                                   help_text='Необязательное описание категории')
 
-    is_active = models.BooleanField(default=True,verbose_name='Активна',help_text='Отображается ли категория на сайте')
+    is_active = models.BooleanField(default=True, verbose_name='Активна',
+                                    help_text='Отображается ли категория на сайте')
 
-    created_at = models.DateTimeField(auto_now_add=True,verbose_name='Дата создания')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
 
-    updated_at = models.DateTimeField(auto_now=True,)
+    updated_at = models.DateTimeField(auto_now=True, )
 
     class Meta:
         verbose_name = "каталог"
@@ -22,7 +25,8 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-class SubscriptionType (models.Model):
+
+class SubscriptionType(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название типа')
     period = models.TimeField(verbose_name='Период действия')
     description = models.TextField(verbose_name='Описание')
@@ -35,7 +39,8 @@ class SubscriptionType (models.Model):
     def __str__(self):
         return self.name
 
-class Stock (models.Model):
+
+class Stock(models.Model):
     promo_code = models.CharField(max_length=50, verbose_name='Промокод')
     name = models.CharField(max_length=255, verbose_name='Название акции')
     is_percent = models.BooleanField(default=True, verbose_name='В процентах')
@@ -48,20 +53,22 @@ class Stock (models.Model):
     def __str__(self):
         return self.name
 
-class Subscription (models.Model):
-        purchase_date = models.DateField(verbose_name='Дата покупки')
-        start_date = models.DateField(verbose_name='Дата начала')
-        end_date = models.DateField(verbose_name='Дата окончания')
-        visit_total = models.IntegerField(default=0, verbose_name='Общее кол-во посещений')
-        is_active = models.BooleanField(default=True, verbose_name='Активен')
-        sub_type = models.ForeignKey(SubscriptionType, on_delete=models.PROTECT, verbose_name='Тип расписания')
-        stock = models.ForeignKey(Stock, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Акция')
 
-        class Meta:
-            verbose_name = "Абонемент"
-            verbose_name_plural = "Абонементы"
+class Subscription(models.Model):
+    purchase_date = models.DateField(verbose_name='Дата покупки')
+    start_date = models.DateField(verbose_name='Дата начала')
+    end_date = models.DateField(verbose_name='Дата окончания')
+    visit_total = models.IntegerField(default=0, verbose_name='Общее кол-во посещений')
+    is_active = models.BooleanField(default=True, verbose_name='Активен')
+    sub_type = models.ForeignKey(SubscriptionType, on_delete=models.PROTECT, verbose_name='Тип расписания')
+    stock = models.ForeignKey(Stock, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Акция')
 
-class Review (models.Model):
+    class Meta:
+        verbose_name = "Абонемент"
+        verbose_name_plural = "Абонементы"
+
+
+class Review(models.Model):
     reviews = models.TextField(verbose_name='Отзыв')
     first_name = models.CharField(max_length=100, verbose_name='Имя')
 
@@ -69,7 +76,8 @@ class Review (models.Model):
         verbose_name = "Отзыв"
         verbose_name_plural = "Отзывы"
 
-class User (models.Model):
+
+class User(models.Model):
     phone = models.CharField(max_length=20, verbose_name='Телефон')
     gender = models.CharField(max_length=10, null=True, blank=True, verbose_name='Пол')
     role = models.IntegerField(default=1, verbose_name='Роль пользователя')
@@ -79,7 +87,8 @@ class User (models.Model):
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
 
-class Workout (models.Model):
+
+class Workout(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название тренировки')
     category = models.CharField(max_length=50, verbose_name='Категория')
     workout_id = models.CharField(max_length=255, unique=True, null=True, blank=True, verbose_name='ID тренировки')
@@ -92,7 +101,8 @@ class Workout (models.Model):
         verbose_name = "Тренировка"
         verbose_name_plural = "Тренировки"
 
-class Schedule (models.Model):
+
+class Schedule(models.Model):
     time = models.TimeField(verbose_name='Время')
     trainer = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 2}, verbose_name='Тренер')
     schedule_type = models.ForeignKey(SubscriptionType, on_delete=models.PROTECT, verbose_name='Тип расписания')
@@ -103,7 +113,8 @@ class Schedule (models.Model):
         verbose_name = "Расписание"
         verbose_name_plural = "Расписания"
 
-class Visit (models.Model):
+
+class Visit(models.Model):
     check_time = models.DateTimeField(verbose_name='Время входа')
     check_out_time = models.DateTimeField(null=True, blank=True, verbose_name='Время выхода')
     subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE, verbose_name='Абонемент')
