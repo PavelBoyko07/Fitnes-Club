@@ -1,41 +1,183 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 {% extends 'base.html' %}
+
+{% block title %}Абонементы{% endblock %}
 
 {% block content %}
 
-<h1 class="mb-4">Абонементы</h1>
+<style>
+    body {
+        background: #050505;
+        color: white;
+    }
 
-<div class="row">
+    .membership-section {
+    padding: 150px 0 50px;
+}
 
-{% for abonement in abonements %}
-<div class="col-md-4 mb-4">
-    <div class="card h-100">
+    .membership-card {
+        background: #111;
+        border-radius: 24px;
+        padding: 30px 25px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        transition: 0.3s;
+        border: 1px solid rgba(255,255,255,0.06);
+    }
 
-        {% if abonement.image %}
-        <img src="{{ abonement.image.url }}" class="card-img-top" height="250">
-        {% endif %}
+    .membership-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(255,255,255,0.15);
+    }
 
-        <div class="card-body">
-            <h4>{{ abonement.name }}</h4>
-            <p>{{ abonement.description|truncatewords:20 }}</p>
-            <h5>{{ abonement.price }} сом</h5>
+    .membership-title {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 25px;
+        line-height: 1.1;
+    }
 
-            <a href="{% url 'abonement_detail' abonement.pk %}" class="btn btn-dark">
-                Подробнее
-            </a>
+    .membership-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 30px;
+        flex-grow: 1;
+    }
+
+    .membership-list li {
+        color: #bdbdbd;
+        margin-bottom: 12px;
+        line-height: 1.4;
+    }
+
+    .membership-list li::before {
+        content: "• ";
+        color: #777;
+    }
+
+    .price-line {
+        height: 1px;
+        background: rgba(255,255,255,0.1);
+        margin-bottom: 20px;
+    }
+
+    .old-price {
+        color: #666;
+        text-decoration: line-through;
+        margin-bottom: 5px;
+    }
+
+    .new-price {
+        font-size: 2.7rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        white-space: nowrap;
+    }
+
+    .buy-btn {
+        background: #222;
+        color: white;
+        border: none;
+        border-radius: 14px;
+        padding: 15px;
+        font-weight: 700;
+        width: 100%;
+        transition: 0.3s;
+    }
+
+    .buy-btn:hover {
+        background: #333;
+    }
+
+    .gold-card {
+        border: 1px solid rgba(255, 196, 0, 0.2);
+        background: #181305;
+    }
+
+    .gold-card .membership-title {
+        color: #f5c542;
+    }
+
+    @media(max-width:768px) {
+        .membership-title {
+            font-size: 1.7rem;
+        }
+
+        .new-price {
+            font-size: 2.2rem;
+        }
+    }
+</style>
+
+<section class="membership-section">
+    <div class="container">
+        <div class="text-center mb-5">
+    <h1 class="fw-bold">Абонементы</h1>
+</div>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="membership-card">
+                    <h2 class="membership-title">1 месяц</h2>
+                    <ul class="membership-list">
+                        <li>Доступ в клуб</li>
+                        <li>Персональный тренер</li>
+                        <li>Хаммам</li>
+                        <li>Групповые тренировки</li>
+                    </ul>
+                    <div class="price-line"></div>
+                    <div class="old-price">7 900 ₽</div>
+                    <div class="new-price">5 900 ₽</div>
+                    <button class="buy-btn">Купить онлайн</button>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="membership-card">
+                    <h2 class="membership-title">3 месяца</h2>
+                    <ul class="membership-list">
+                        <li>Доступ в клуб</li>
+                        <li>Персональный тренер</li>
+                        <li>Хаммам</li>
+                        <li>Групповые тренировки</li>
+                    </ul>
+                    <div class="price-line"></div>
+                    <div class="old-price">12 900 ₽</div>
+                    <div class="new-price">10 900 ₽</div>
+                    <button class="buy-btn">Купить онлайн</button>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="membership-card gold-card">
+                    <h2 class="membership-title">6 месяцев</h2>
+                    <ul class="membership-list">
+                        <li>Доступ в клуб</li>
+                        <li>Персональный тренер</li>
+                        <li>Хаммам</li>
+                        <li>Групповые тренировки</li>
+                        <li>30 дней заморозки</li>
+                    </ul>
+                    <div class="price-line"></div>
+                    <div class="old-price">18 990 ₽</div>
+                    <div class="new-price">14 900 ₽</div>
+                    <button class="buy-btn">Купить онлайн</button>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="membership-card">
+                    <h2 class="membership-title">12 месяцев</h2>
+                    <ul class="membership-list">
+                        <li>Доступ в Bull Gym</li>
+                        <li>Персональный тренер</li>
+                        <li>Хаммам</li>
+                        <li>Групповые тренировки</li>
+                        <li>60 дней заморозки</li>
+                    </ul>
+                    <div class="price-line"></div>
+                    <div class="old-price">28 900 ₽</div>
+                    <div class="new-price">20 900 ₽</div>
+                    <button class="buy-btn">Купить онлайн</button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-{% endfor %}
-
-</div>
-
+</section>
 {% endblock %}
-</body>
-</html>

@@ -148,6 +148,32 @@
             background: #e63946;
             transform: translateY(-3px);
         }
+        body {
+    font-family: 'Inter', sans-serif;
+    color: #fff;
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(circle at 20% 10%, rgba(230,57,70,0.18), transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.05), transparent 50%),
+        radial-gradient(circle at 50% 90%, rgba(230,57,70,0.08), transparent 55%),
+        linear-gradient(180deg, #0a0a0a 0%, #000 100%);
+}
+
+.bg-glow{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+
+    background:
+        radial-gradient(circle at 15% 20%, rgba(230,57,70,0.12), transparent 45%),
+        radial-gradient(circle at 85% 70%, rgba(255,255,255,0.04), transparent 50%);
+}
+
     </style>
     {% block extra_css %}{% endblock %}
 </head>
