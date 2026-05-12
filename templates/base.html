@@ -25,6 +25,11 @@
             background: #0a0a0a;
             color: #fff;
             overflow-x: hidden;
+            background:
+                radial-gradient(circle at 20% 10%, rgba(230,57,70,0.18), transparent 40%),
+                radial-gradient(circle at 80% 30%, rgba(255,255,255,0.05), transparent 50%),
+                radial-gradient(circle at 50% 90%, rgba(230,57,70,0.08), transparent 55%),
+                linear-gradient(180deg, #0a0a0a 0%, #000 100%);
         }
 
         /* Custom Scrollbar */
@@ -113,6 +118,65 @@
             transform: translateY(-2px);
         }
 
+        /* Auth Buttons */
+        .btn-auth-login {
+            background: transparent;
+            border: 1px solid #e63946;
+            color: #e63946;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-right: 10px;
+            display: inline-block;
+        }
+        .btn-auth-login:hover {
+            background: #e63946;
+            color: white;
+            transform: translateY(-2px);
+        }
+        .btn-auth-register {
+            background: linear-gradient(135deg, #e63946, #c1121f);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-auth-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230,57,70,0.3);
+            color: white;
+        }
+        .btn-logout {
+            background: linear-gradient(135deg, #e63946, #c1121f);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230,57,70,0.3);
+        }
+        .user-greeting {
+            color: white;
+            margin-right: 15px;
+            font-size: 14px;
+            padding: 8px 0;
+        }
+        .user-greeting i {
+            color: #e63946;
+            margin-right: 8px;
+        }
+
         /* Messages */
         .alert-custom {
             position: fixed;
@@ -143,37 +207,31 @@
             justify-content: center;
             margin: 0 5px;
             transition: 0.3s;
+            color: white;
+            text-decoration: none;
         }
         .social-icon:hover {
             background: #e63946;
             transform: translateY(-3px);
+            color: white;
         }
-        body {
-    font-family: 'Inter', sans-serif;
-    color: #fff;
-    overflow-x: hidden;
 
-    background:
-        radial-gradient(circle at 20% 10%, rgba(230,57,70,0.18), transparent 40%),
-        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.05), transparent 50%),
-        radial-gradient(circle at 50% 90%, rgba(230,57,70,0.08), transparent 55%),
-        linear-gradient(180deg, #0a0a0a 0%, #000 100%);
-}
-
-.bg-glow{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-
-    background:
-        radial-gradient(circle at 15% 20%, rgba(230,57,70,0.12), transparent 45%),
-        radial-gradient(circle at 85% 70%, rgba(255,255,255,0.04), transparent 50%);
-}
-
+        /* Mobile */
+        @media (max-width: 991px) {
+            .navbar-nav {
+                text-align: center;
+                padding: 20px 0;
+            }
+            .btn-auth-login, .btn-auth-register, .btn-logout {
+                margin: 5px 0;
+                display: inline-block;
+            }
+            .user-greeting {
+                margin-bottom: 10px;
+                display: block;
+                text-align: center;
+            }
+        }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
@@ -189,14 +247,41 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Главная</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'abonement_list' %}">Абонементы</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'trainer_list' %}">Тренеры</a></li>
                 <li class="nav-item"><a class="nav-link" href="#reviews">Отзывы</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Контакты</a></li>
+
+                <!-- КНОПКИ ВХОДА/ВЫХОДА -->
+                {% if user.is_authenticated %}
+                    <li class="nav-item ms-3">
+                        <div class="d-flex align-items-center">
+                            <span class="user-greeting">
+                                <i class="fas fa-user-circle"></i> {{ user.username }}
+                            </span>
+                            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-logout">
+                                    <i class="fas fa-sign-out-alt"></i> Выйти
+                                </button>
+                            </form>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="nav-item ms-3">
+                        <div class="d-flex">
+                            <a href="{% url 'login' %}" class="btn-auth-login">
+                                <i class="fas fa-sign-in-alt"></i> Вход
+                            </a>
+                            <a href="{% url 'register' %}" class="btn-auth-register">
+                                <i class="fas fa-user-plus"></i> Регистрация
+                            </a>
+                        </div>
+                    </li>
+                {% endif %}
             </ul>
-            <a href="{% url 'abonement_list' %}" class="btn btn-premium ms-3">Начать →</a>
         </div>
     </div>
 </nav>
@@ -231,43 +316,36 @@
             <div class="col-lg-2 col-md-4 mb-4">
                 <h5>Меню</h5>
                 <ul class="list-unstyled">
-    <li><a href="{% url 'home' %}" class="text-white-70 text-decoration-none">Главная</a></li>
-    <li><a href="{% url 'abonement_list' %}" class="text-white-70 text-decoration-none">Абонементы</a></li>
-    <li><a href="{% url 'trainer_list' %}" class="text-white-70 text-decoration-none">Тренеры</a></li>
-    <li><a href="{% url 'contact' %}" class="text-white-70 text-decoration-none">Контакты</a></li>
-</ul>
+                    <li><a href="{% url 'home' %}" class="text-white-70 text-decoration-none">Главная</a></li>
+                    <li><a href="{% url 'abonement_list' %}" class="text-white-70 text-decoration-none">Абонементы</a></li>
+                    <li><a href="{% url 'trainer_list' %}" class="text-white-70 text-decoration-none">Тренеры</a></li>
+                    <li><a href="{% url 'contact' %}" class="text-white-70 text-decoration-none">Контакты</a></li>
+                </ul>
             </div>
             <div class="col-lg-3 col-md-4 mb-4">
                 <h5 class="text-white mb-3">Контакты</h5>
-<p class="mb-2" style="color: #b8b8b8; transition: 0.3s;">
-    <i class="fas fa-map-marker-alt me-2" style="color: #e63946;"></i>
-    Москва, ул. Спортивная, 15
-</p>
-<p class="mb-2" style="color: #b8b8b8; transition: 0.3s;">
-    <i class="fas fa-phone me-2" style="color: #e63946;"></i>
-    +7 (999) 123-45-67
-</p>
-<p style="color: #b8b8b8; transition: 0.3s;">
-    <i class="fas fa-envelope me-2" style="color: #e63946;"></i>
-    info@fitclub.ru
-</p>
-
-<style>
-    [style*="color: #b8b8b8"]:hover {
-        color: #ffffff !important;
-        transform: translateX(5px);
-        display: inline-block;
-    }
-</style>
+                <p class="mb-2" style="color: #b8b8b8;">
+                    <i class="fas fa-map-marker-alt me-2" style="color: #e63946;"></i>
+                    Москва, ул. Спортивная, 15
+                </p>
+                <p class="mb-2" style="color: #b8b8b8;">
+                    <i class="fas fa-phone me-2" style="color: #e63946;"></i>
+                    +7 (999) 123-45-67
+                </p>
+                <p style="color: #b8b8b8;">
+                    <i class="fas fa-envelope me-2" style="color: #e63946;"></i>
+                    info@fitclub.ru
+                </p>
             </div>
             <div class="col-lg-3 col-md-4 mb-4">
                 <h5 class="text-white">Часы работы</h5>
-<p class="text-white-70 mb-0">Пн-Пт: 07:00 - 00:00</p>
-<p class="text-white-70">Сб-Вс: 09:00 - 22:00</p>
+                <p class="text-white-70 mb-0">Пн-Пт: 07:00 - 00:00</p>
+                <p class="text-white-70">Сб-Вс: 09:00 - 22:00</p>
             </div>
         </div>
         <hr class="bg-secondary">
-        <div class="text-center text-muted"><p class="lead text-white-50 mb-0">© 2024 FitClub. Все права защищены.</p>
+        <div class="text-center text-muted">
+            <p class="lead text-white-50 mb-0">© 2026 FitClub. Все права защищены.</p>
         </div>
     </div>
 </footer>

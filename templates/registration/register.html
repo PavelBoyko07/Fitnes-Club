@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Регистрация - FitClub{% endblock %}
+
+{% block content %}
+<section class="register-section" style="min-height: 100vh; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%); position: relative; overflow: hidden; padding: 100px 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8" data-aos="fade-up">
+
+                <!-- Register Card -->
+                <div class="register-card" style="
+                    background: rgba(20,20,20,0.8);
+                    backdrop-filter: blur(12px);
+                    border: 1px solid rgba(255,255,255,0.06);
+                    border-radius: 30px;
+                    padding: 40px;
+                    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+                ">
+
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <h1 class="display-5 fw-bold text-white mb-2">
+                                Добро пожаловать в <span style="color: #e63946;">FitClub</span>
+                        </h1>
+                        <p class="text-white-70">Создайте аккаунт, чтобы начать тренировки</p>
+                    </div>
+
+                    <!-- Form -->
+                    <form method="post" class="register-form">
+                        {% csrf_token %}
+
+                        {% for field in form %}
+                        <div class="form-group mb-4">
+                            <label for="{{ field.id_for_label }}" class="form-label text-white mb-2">
+                                {{ field.label }}
+                                {% if field.field.required %}
+                                    <span style="color: #e63946;">*</span>
+                                {% endif %}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small class="help-text" style="color: #6c757d; font-size: 12px; display: block; margin-top: 5px;">
+                                    {{ field.help_text }}
+                                </small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <div class="error-message" style="color: #e63946; font-size: 12px; margin-top: 5px;">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn-register w-100" style="
+                            background: linear-gradient(135deg, #e63946, #c1121f);
+                            color: white;
+                            border: none;
+                            border-radius: 50px;
+                            padding: 14px;
+                            font-size: 18px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            margin-top: 20px;
+                        ">
+                            Создать аккаунт →
+                        </button>
+                    </form>
+
+                    <!-- Divider -->
+                    <div class="divider d-flex align-items-center my-4" style="gap: 15px;">
+                        <hr style="flex: 1; background: rgba(255,255,255,0.1); border: none; height: 1px;">
+                        <span style="color: #6c757d; font-size: 14px;">или</span>
+                        <hr style="flex: 1; background: rgba(255,255,255,0.1); border: none; height: 1px;">
+                    </div>
+
+                    <!-- Login Link -->
+                    <div class="text-center">
+                        <p style="color: #6c757d; margin-bottom: 0;">
+                            Уже есть аккаунт?
+                            <a href="{% url 'login' %}" style="
+                                color: #e63946;
+                                text-decoration: none;
+                                font-weight: 500;
+                                transition: color 0.2s;
+                            " onmouseover="this.style.color='#ff6b6b'" onmouseout="this.style.color='#e63946'">
+                                Войти →
+                            </a>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Features List -->
+                <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="d-flex justify-content-center gap-4 flex-wrap">
+                        <div class="feature-item" style="color: #6c757d; font-size: 14px;">
+                            <span style="color: #e63946;">✓</span> Доступ ко всем клубам
+                        </div>
+                        <div class="feature-item" style="color: #6c757d; font-size: 14px;">
+                            <span style="color: #e63946;">✓</span> Личный кабинет
+                        </div>
+                        <div class="feature-item" style="color: #6c757d; font-size: 14px;">
+                            <span style="color: #e63946;">✓</span> Персональные тренировки
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Стили для полей формы */
+    .register-form input,
+    .register-form select,
+    .register-form textarea {
+        width: 100%;
+        padding: 12px 16px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        color: white;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    .register-form input:focus,
+    .register-form select:focus,
+    .register-form textarea:focus {
+        outline: none;
+        border-color: #e63946;
+        background: rgba(255,255,255,0.08);
+        box-shadow: 0 0 0 3px rgba(230,57,70,0.1);
+    }
+
+    .register-form input::placeholder,
+    .register-form select::placeholder,
+    .register-form textarea::placeholder {
+        color: rgba(255,255,255,0.3);
+    }
+
+    /* Hover эффект для кнопки */
+    .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(230,57,70,0.3);
+    }
+
+    .btn-register:active {
+        transform: translateY(0);
+    }
+
+    /* Анимация для карточки */
+    .register-card {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Стили для ошибок валидации */
+    .register-form input.error,
+    .register-form select.error,
+    .register-form textarea.error {
+        border-color: #e63946;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+        .register-card {
+            padding: 25px !important;
+            margin: 0 15px;
+        }
+
+        .register-card h1 {
+            font-size: 28px !important;
+        }
+    }
+</style>
+{% endblock %}
