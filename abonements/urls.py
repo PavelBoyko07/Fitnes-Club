@@ -1,3 +1,5 @@
+from operator import index
+
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
@@ -10,6 +12,7 @@ urlpatterns = [
     path('trainers/', views.TrainerListView.as_view(), name='trainer_list'),
     path('reviews/create/', views.ReviewCreateView.as_view(), name='review_create'),
     path('contact/', views.ContactView.as_view(), name='contact'),
+    path('', index, name='index'),
 ]
 
 if settings.DEBUG:

@@ -4,7 +4,7 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     full_name = models.CharField(max_length=150)
-    phone = models.CharField(max_length=16, unique=True)
+    phone = models.CharField(max_length=16)
     email = models.EmailField(unique=True)
 
     def __str__(self):
